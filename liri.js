@@ -47,36 +47,39 @@ userRequest(command,userQuery);
 
 
 function findConcert(band) {
-    var band = userQuery;
     var queryURL = "https://rest.bandsintown.com/artists/" + band + "/events?app_id=codingbootcamp";
+    var band = userQuery;
     axios.get(queryURL).then(
-                function(response) {
-                    console.log("==============================\n");
-                    console.log(band.charAt(0).toUpperCase() + band.slice(1) + " is playing at:\n");
-                    console.log("Venue: " + response.data[0].venue.name);
-                    console.log("Location: " + response.data[0].venue.city + ", " + response.data[0].venue.region);
-                    console.log("Date: " + moment(response.data[0].datetime).format("MM-DD-YYYY"));
-                    console.log("\n==============================");
-                });
-}
+        function(response) {
+            console.log("==============================\n");
+            console.log(band.charAt(0).toUpperCase() + band.slice(1) + " is playing at:\n");
+            console.log("Venue: " + response.data[0].venue.name);
+            console.log("Location: " + response.data[0].venue.city + ", " + response.data[0].venue.region);
+            console.log("Date: " + moment(response.data[0].datetime).format("MM-DD-YYYY"));
+            console.log("\n==============================");
+        });
+    }
 
-function findSong(song) {
-    var song = userQuery;
-    spotify
-    .search({ type: 'track', query: song })
-    .then(function(response) {
-        console.log("==============================\n");
-        console.log('Spotify Results for "' + song.charAt(0).toUpperCase() + song.slice(1) + '":\n')
-        console.log("Artist Name: " + response.tracks.items[0].artists[0].name);
-        console.log("Album Name: " + response.tracks.items[0].album.name);
-        console.log("Track Name: " + response.tracks.items[0].name);
-        console.log("Preview Track: " + response.tracks.items[0].external_urls.spotify);
-        console.log("\n==============================");
-    })
-    .catch(function(err) {
-      console.log(err);
-    });
-}
+function findSong() {
+    if (!userQuery) {
+        userQuery = "The Sign Ace of Base";
+    }   var song = userQuery;
+        spotify
+        .search({ type: 'track', query: song })
+        .then(function(response) {
+            console.log("==============================\n");
+            console.log('Spotify Results for "' + song.charAt(0).toUpperCase() + song.slice(1) + '":\n')
+            console.log("Artist Name: " + response.tracks.items[0].artists[0].name);
+            console.log("Album Name: " + response.tracks.items[0].album.name);
+            console.log("Track Name: " + response.tracks.items[0].name);
+            console.log("Preview Track: " + response.tracks.items[0].external_urls.spotify);
+            console.log("\n==============================");
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    };
+
 
 function findMovie(movie) {
     var movie = userQuery;

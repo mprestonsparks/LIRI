@@ -33,13 +33,13 @@ var userRequest = function(command,userQuery) {
             doThis();
             break;
         default:
-            console.log("==============================\n");
+            console.log("\n==============================\n");
             console.log("**VALID COMMAND REQUIRED**");
             console.log("Enter one of the following commands: \n");
             console.log("concert-this <BAND NAME>");
             console.log("spotify-this-song <SONG NAME>");
             console.log("movie-this <MOVIE NAME>");
-            console.log("\n==============================");
+            console.log("\n==============================\n");
 
     };
 }
@@ -53,12 +53,22 @@ function findConcert() {
     var queryURL = "https://rest.bandsintown.com/artists/" + band + "/events?app_id=codingbootcamp";
     axios.get(queryURL).then(
         function(response) {
-            console.log("==============================\n");
+            console.log("\n==============================\n");
             console.log(band.charAt(0).toUpperCase() + band.slice(1) + " is playing at:\n");
             console.log("Venue: " + response.data[0].venue.name);
             console.log("Location: " + response.data[0].venue.city + ", " + response.data[0].venue.region);
             console.log("Date: " + moment(response.data[0].datetime).format("MM-DD-YYYY"));
-            console.log("\n==============================");
+            console.log("\n==============================\n");
+
+            var logConcert =    "\n==============================\n" + 
+                                band.charAt(0).toUpperCase() + band.slice(1) + " is playing at:\n" +
+                                "Venue: " + response.data[0].venue.name + "\n" +
+                                "Location: " + response.data[0].venue.city + ", " + response.data[0].venue.region + "\n" +
+                                "Date: " + moment(response.data[0].datetime).format("MM-DD-YYYY") + "\n" +
+                                "\n==============================\n"
+            fs.appendFile("log.txt", logConcert, function(err) {
+                if (err) throw err;
+            });
         });
     }
 
@@ -69,13 +79,24 @@ function findSong() {
         spotify
         .search({ type: 'track', query: song })
         .then(function(response) {
-            console.log("==============================\n");
+            console.log("\n==============================\n");
             console.log('Spotify Results for "' + song.charAt(0).toUpperCase() + song.slice(1) + '":\n')
             console.log("Artist Name: " + response.tracks.items[0].artists[0].name);
             console.log("Album Name: " + response.tracks.items[0].album.name);
             console.log("Track Name: " + response.tracks.items[0].name);
             console.log("Preview Track: " + response.tracks.items[0].external_urls.spotify);
-            console.log("\n==============================");
+            console.log("\n==============================\n");
+
+            var logSong =   "\n==============================\n" +
+                            'Spotify Results for "' + song.charAt(0).toUpperCase() + song.slice(1) + '":\n' +
+                            "Artist Name: " + response.tracks.items[0].artists[0].name + "\n" +
+                            "Album Name: " + response.tracks.items[0].album.name + "\n" +
+                            "Track Name: " + response.tracks.items[0].name + "\n" +
+                            "Preview Track: " + response.tracks.items[0].external_urls.spotify +
+                            "\n==============================\n"
+            fs.appendFile("log.txt", logSong, function(err) {
+                if (err) throw err;
+            });
         })
         .catch(function(err) {
           console.log(err);
@@ -88,7 +109,7 @@ function findMovie() {
     }   var movie = userQuery;
         axios.get("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy").then(
             function(response) {
-            console.log("==============================\n");
+            console.log("\n==============================\n");
             console.log('OMDB Results for "' + movie.charAt(0).toUpperCase() + movie.slice(1) + '":\n')
             console.log("Title: " + response.data.Title);
             console.log("Released: " + response.data.Year);
@@ -98,7 +119,22 @@ function findMovie() {
             console.log("Language: " + response.data.Language);
             console.log("Plot: " + response.data.Plot);
             console.log("Actors: " + response.data.Actors);
-            console.log("\n==============================");
+            console.log("\n==============================\n");
+
+            var logMovie =  "\n==============================\n" +
+                            'OMDB Results for "' + movie.charAt(0).toUpperCase() + movie.slice(1) + '":\n' +
+                            "Title: " + response.data.Title + "\n" +
+                            "Released: " + response.data.Year + "\n" +
+                            "IMDB Rating: " + response.data.imdbRating + "\n" +
+                            "Rotten Tomato Rating: " + response.data.Ratings[1].Value + "\n" +
+                            "Country: " + response.data.Country + "\n" +
+                            "Language: " + response.data.Language + "\n" +
+                            "Plot: " + response.data.Plot + "\n" +
+                            "Actors: " + response.data.Actors +
+                            "\n==============================\n"
+            fs.appendFile("log.txt", logMovie, function(err) {
+                if (err) throw err;
+            });
         });
 }
 

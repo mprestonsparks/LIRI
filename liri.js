@@ -21,16 +21,16 @@ var userQuery = process.argv.slice(3).join(" ");
 var userRequest = function(command,userQuery) {
     switch (command) {
         case "concert-this":
-            findConcert();
+            findConcert(userQuery);
             break;
         case "spotify-this-song":
-            findSong();
+            findSong(userQuery);
             break;
         case "movie-this":
-            findMovie();
+            findMovie(userQuery);
             break;
         case "do-what-it-says":
-            doThis(userQuery);
+            doThis();
             break;
         default:
             console.log("==============================\n");
@@ -96,6 +96,16 @@ function findMovie(movie) {
     });
 }
 
-function doThis(userQuery) {
-
-}
+function doThis() {
+    fs.readFile("random.txt", "utf8", function (error,data) {
+        if (error) {
+            return console.log(error);
+        } else {
+            console.log(data);
+            var fileContent = data.split(",");
+            command = fileContent[0];
+            userQuery = fileContent[1];
+            userRequest(command,userQuery);
+        };
+    });
+};

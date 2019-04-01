@@ -43,12 +43,14 @@ var userRequest = function(command,userQuery) {
 
     };
 }
+
+// Call userRequest function
 userRequest(command,userQuery);
 
 
-function findConcert(band) {
-    var queryURL = "https://rest.bandsintown.com/artists/" + band + "/events?app_id=codingbootcamp";
+function findConcert() {
     var band = userQuery;
+    var queryURL = "https://rest.bandsintown.com/artists/" + band + "/events?app_id=codingbootcamp";
     axios.get(queryURL).then(
         function(response) {
             console.log("==============================\n");
@@ -79,7 +81,6 @@ function findSong() {
           console.log(err);
         });
     };
-
 
 function findMovie() {
     if (!userQuery) {

@@ -81,22 +81,24 @@ function findSong() {
     };
 
 
-function findMovie(movie) {
-    var movie = userQuery;
-    axios.get("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy").then(
-        function(response) {
-        console.log("==============================\n");
-        console.log('OMDB Results for "' + movie.charAt(0).toUpperCase() + movie.slice(1) + '":\n')
-        console.log("Title: " + response.data.Title);
-        console.log("Released: " + response.data.Year);
-        console.log("IMDB Rating: " + response.data.imdbRating);
-        console.log("Rotten Tomato Rating: " + response.data.Ratings[1].Value);
-        console.log("Country: " + response.data.Country);
-        console.log("Language: " + response.data.Language);
-        console.log("Plot: " + response.data.Plot);
-        console.log("Actors: " + response.data.Actors);
-        console.log("\n==============================");
-    });
+function findMovie() {
+    if (!userQuery) {
+        userQuery = "Mr. Nobody";
+    }   var movie = userQuery;
+        axios.get("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy").then(
+            function(response) {
+            console.log("==============================\n");
+            console.log('OMDB Results for "' + movie.charAt(0).toUpperCase() + movie.slice(1) + '":\n')
+            console.log("Title: " + response.data.Title);
+            console.log("Released: " + response.data.Year);
+            console.log("IMDB Rating: " + response.data.imdbRating);
+            console.log("Rotten Tomato Rating: " + response.data.Ratings[1].Value);
+            console.log("Country: " + response.data.Country);
+            console.log("Language: " + response.data.Language);
+            console.log("Plot: " + response.data.Plot);
+            console.log("Actors: " + response.data.Actors);
+            console.log("\n==============================");
+        });
 }
 
 function doThis() {

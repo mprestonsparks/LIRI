@@ -1,33 +1,4 @@
 
-// *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~
-// OMDB Requests
-// http://www.omdbapi.com/?apikey=[yourkey]&
-// DOCS: http://www.omdbapi.com/
-// *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~
-
-
-// *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~
-// Spotify Requests
-// Client ID: 0e61c0dc70d84a4a969bde1e172366a2
-// DOCS: https://www.npmjs.com/package/node-spotify-api
-
-// var Spotify = require('node-spotify-api');
-
-// var spotify = new Spotify({
-//     id: <your spotify client id>,
-//     secret: <your spotify client secret>
-//   });
-   
-//   spotify
-//     .request('https://api.spotify.com/v1/tracks/7yCPwWs66K8Ba5lFuU2bcx')
-//     .then(function(data) {
-//       console.log(data); 
-//     })
-//     .catch(function(err) {
-//       console.error('Error occurred: ' + err); 
-//     });
-// *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~
-
 // REQUIRE .env FILE
 require("dotenv").config();
 // REQUIRE MOMENT
@@ -41,16 +12,11 @@ var keys = require("./keys.js");
 // INITIALIZE SPOTIFY API
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
-// INITIALIZE OMDB API
-
-// MAYBE DONT NEED THESE / REMOVE
-var omdb = (keys.omdb);
-// INITIALIZE BANDS IN TOWN API
-var bandsintown = (keys.bandsintown);
 
 // SET UP USER INPUTS
 var command = process.argv[2];
 var userQuery = process.argv.slice(3).join(" ");
+
 
 var userRequest = function(command,userQuery) {
     switch (command) {
@@ -61,32 +27,36 @@ var userRequest = function(command,userQuery) {
             findSong();
             break;
         case "movie-this":
-            movieThis();
-            // axios.get("http://www.omdbapi.com/?t=remember+the+titans&y=&plot=short&apikey=trilogy").then(
-            //     function(response) {
-            //     console.log("The movie's rating is: " + response.data.imdbRating);
-            // });
+            findMovie();
             break;
         case "do-what-it-says":
             doThis(userQuery);
             break;
         default:
-            console.log("Valid command required");
+            console.log("==============================\n");
+            console.log("**VALID COMMAND REQUIRED**");
+            console.log("Enter one of the following commands: \n");
+            console.log("concert-this <BAND NAME>");
+            console.log("spotify-this-song <SONG NAME>");
+            console.log("movie-this <MOVIE NAME>");
+            console.log("\n==============================");
+
     };
 }
 userRequest(command,userQuery);
+
 
 function findConcert(band) {
     var band = userQuery;
     var queryURL = "https://rest.bandsintown.com/artists/" + band + "/events?app_id=codingbootcamp";
     axios.get(queryURL).then(
                 function(response) {
-                    console.log("==============================");
-                    console.log(band.charAt(0).toUpperCase() + band.slice(1) + " is playing at:");
+                    console.log("==============================\n");
+                    console.log(band.charAt(0).toUpperCase() + band.slice(1) + " is playing at:\n");
                     console.log("Venue: " + response.data[0].venue.name);
                     console.log("Location: " + response.data[0].venue.city + ", " + response.data[0].venue.region);
                     console.log("Date: " + moment(response.data[0].datetime).format("MM-DD-YYYY"));
-                    console.log("==============================");
+                    console.log("\n==============================");
                 });
 }
 
@@ -95,12 +65,37 @@ function findSong(song) {
     spotify
     .search({ type: 'track', query: song })
     .then(function(response) {
-        console.log(response.tracks.items[0].album.artists[3]);
-        // console.log(response.tracks.items[0].name);
-        // console.log(response.tracks.items[0].album.name);
-        // console.log(response.tracks.items[0].external_urls.spotify);
+        console.log("==============================\n");
+        console.log('Spotify Results for "' + song.charAt(0).toUpperCase() + song.slice(1) + '":\n')
+        console.log("Artist Name: " + response.tracks.items[0].artists[0].name);
+        console.log("Album Name: " + response.tracks.items[0].album.name);
+        console.log("Track Name: " + response.tracks.items[0].name);
+        console.log("Preview Track: " + response.tracks.items[0].external_urls.spotify);
+        console.log("\n==============================");
     })
     .catch(function(err) {
       console.log(err);
     });
+}
+
+function findMovie(movie) {
+    var movie = userQuery;
+    axios.get("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy").then(
+        function(response) {
+        console.log("==============================\n");
+        console.log('OMDB Results for "' + movie.charAt(0).toUpperCase() + movie.slice(1) + '":\n')
+        console.log("Title: " + response.data.Title);
+        console.log("Released: " + response.data.Year);
+        console.log("IMDB Rating: " + response.data.imdbRating);
+        console.log("Rotten Tomato Rating: " + response.data.Ratings[1].Value);
+        console.log("Country: " + response.data.Country);
+        console.log("Language: " + response.data.Language);
+        console.log("Plot: " + response.data.Plot);
+        console.log("Actors: " + response.data.Actors);
+        console.log("\n==============================");
+    });
+}
+
+function doThis(userQuery) {
+
 }

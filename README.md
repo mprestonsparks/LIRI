@@ -7,11 +7,11 @@
 &nbsp; A simple Node.js application which makes requests to various APIs using the command line interface   </br></br>
 
 &nbsp; **What it does** </br>
-&nbsp; From the command line, begin by entering "node liri.js" followed by one of four commands </br>
-&nbsp; "concert-this" followed by a musician's name returns info on their next concert  </br>
-&nbsp; "spotify-this-song" followed by a song name returns info on that song, including a link to play to song  </br>
-&nbsp; "movie-this" followed by a movie name returns info about that movie  </br>
-&nbsp; "do-what-it-says" by itself, which executes the command and query found in random.txt  </br></br>
+&nbsp;  From the command line, begin by entering "node liri.js" followed by one of four commands </br>
+&nbsp; - "concert-this" followed by a musician's name returns info on their next concert  </br>
+&nbsp; - "spotify-this-song" followed by a song name returns info on that song, including a link to play to song  </br>
+&nbsp; - "movie-this" followed by a movie name returns info about that movie  </br>
+&nbsp; - "do-what-it-says" by itself, which executes the command and query found in random.txt  </br></br>
 
 &nbsp; **Challenges**
 </br>&nbsp; `` Issue: Access data on the Spotify, Bands in Town, and OMDB APIs ``
